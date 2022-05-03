@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: office.learningscorecard@gmail.com
+    password: LearningScorecard123
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+server:
+  servlet:
+    context-path: /ucs
+ls:
+  auth:
+    security:
+      secret: 2ae0397612084557a0d946a6bb05fb6e
+      jwtExpirationMs: 86400000LSocketFactory
