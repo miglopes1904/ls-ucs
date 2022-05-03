@@ -34,7 +34,7 @@ public class User {
     private UUID id;
 
     @Builder.Default
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username = TO_BE_DEFINED;
 
     @Column(name = "password")
