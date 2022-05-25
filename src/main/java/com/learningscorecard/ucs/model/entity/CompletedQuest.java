@@ -24,8 +24,8 @@ public class CompletedQuest {
     )
     private UUID id;
 
-    /*@ManyToOne
-    private Quest quest;*/
+    @ManyToOne
+    private Quest quest;
 
     @Builder.Default
     private Long value = 0L;
