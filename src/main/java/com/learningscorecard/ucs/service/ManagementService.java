@@ -65,7 +65,7 @@ public class ManagementService {
 
         UC uc = getOrElseThrow(request.getId());
 
-        uc.setGrades(request.getGrades());
+        uc.setGradeValues(request.getGrades());
 
         //TODO: Update student XPs for the new ranks
         //if call to students is successful:

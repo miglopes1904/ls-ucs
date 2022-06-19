@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -17,6 +18,5 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class ExceptionResponseBody {
     private String message;
     private String detail;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.SSS")
-    private Date timestamp;
+    private LocalDateTime timestamp = LocalDateTime.now();
 }

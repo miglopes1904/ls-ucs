@@ -1,7 +1,7 @@
 package com.learningscorecard.ucs.service;
 
 import com.learningscorecard.ucs.exception.LSException;
-import com.learningscorecard.ucs.model.entity.Grade;
+import com.learningscorecard.ucs.model.entity.GradeValue;
 import com.learningscorecard.ucs.model.entity.Rank;
 import com.learningscorecard.ucs.model.entity.UC;
 import com.learningscorecard.ucs.model.entity.XP;
@@ -34,13 +34,13 @@ class ManagementServiceTest {
     private final UC UC_NOT_ACTIVE = UC.builder().id(ID_NOT_ACTIVE).name("Unit Course").acronym("UC")
             .active(Boolean.FALSE).build();
     private final UpdateRankRequest RANK_OK = UpdateRankRequest.builder().id(ID_STARTED)
-            .ranks(Arrays.asList(new Rank("name", 78))).build();
+            .ranks(Arrays.asList(new Rank("name", 78L))).build();
     private final UpdateRankRequest RANK_NOK = UpdateRankRequest.builder().id(ID_NOT_EXIST)
-            .ranks(Arrays.asList(new Rank("name", 78))).build();
+            .ranks(Arrays.asList(new Rank("name", 78L))).build();
     private final UpdateGradeRequest GRADE_OK = UpdateGradeRequest.builder().id(ID_STARTED)
-            .grades(Arrays.asList(new Grade("name", 78))).build();
+            .grades(Arrays.asList(new GradeValue("name", 78))).build();
     private final UpdateGradeRequest GRADE_NOK = UpdateGradeRequest.builder().id(ID_NOT_EXIST)
-            .grades(Arrays.asList(new Grade("name", 78))).build();
+            .grades(Arrays.asList(new GradeValue("name", 78))).build();
     private final UpdateXPRequest XP_OK = UpdateXPRequest.builder().id(ID_STARTED)
             .XPs(Arrays.asList(new XP("name", 7800L, 70))).build();
     private final UpdateXPRequest XP_NOK = UpdateXPRequest.builder().id(ID_NOT_EXIST)

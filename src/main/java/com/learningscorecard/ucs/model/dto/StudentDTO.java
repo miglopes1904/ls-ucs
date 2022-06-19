@@ -3,6 +3,8 @@ package com.learningscorecard.ucs.model.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.learningscorecard.ucs.model.entity.Alliance;
+import com.learningscorecard.ucs.model.entity.Difficulty;
+import com.learningscorecard.ucs.model.entity.Progress;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -27,5 +29,9 @@ public class StudentDTO extends UserDTO {
     @Builder.Default
     private List<Alliance> alliances = new ArrayList<>();
 
+    @Builder.Default
+    private List<Progress> progresses = new ArrayList<>();
 
+    @Builder.Default
+    private List<Difficulty> difficulties = new ArrayList<>();
 }

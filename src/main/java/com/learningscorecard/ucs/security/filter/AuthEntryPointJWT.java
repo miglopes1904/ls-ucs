@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Component
@@ -21,12 +22,18 @@ public class AuthEntryPointJWT implements AuthenticationEntryPoint {
     public static final String EXCEPTION_THROWN_MESSAGE_CAUSE =
             "\n**** Exception thrown -> {} \n**** Message: {} \n**** Cause: {} ";
 
+    private final ObjectMapper mapper;
+
+    public AuthEntryPointJWT(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         ExceptionResponseBody exceptionResponseBody = ExceptionResponseBody
                 .builder()
                 .message("Unauthorized")
-                .timestamp(new Date())
+                .timestamp(LocalDateTime.now())
                 .build();
 
         log.error(EXCEPTION_THROWN_MESSAGE_CAUSE,
@@ -37,7 +44,6 @@ public class AuthEntryPointJWT implements AuthenticationEntryPoint {
         response.setContentType("application/json");
         response.setStatus(401);
         OutputStream out = response.getOutputStream();
-        ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(out, exceptionResponseBody);
         out.flush();
     }

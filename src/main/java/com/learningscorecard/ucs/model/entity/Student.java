@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Student extends User {
 
-    public static final String STUDENT = "STUDENT";
     //student
     @Column(name = "number")
     private Long number;
@@ -50,5 +49,15 @@ public class Student extends User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "guild_id"))
     private List<Guild> guilds = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_id")
+    private List<Progress> progresses = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_id")
+    private List<Difficulty> difficulties = new ArrayList<>();
 
 }

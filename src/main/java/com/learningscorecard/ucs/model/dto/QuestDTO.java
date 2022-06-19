@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,16 +23,16 @@ public class QuestDTO {
     private String type;
 
     @JsonProperty("start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @JsonProperty("end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @JsonProperty("validation_date")
-    private Date validationDate;
+    private LocalDate validationDate;
 
     @JsonProperty("last_chance_date")
-    private Date lastChanceDate;
+    private LocalDate lastChanceDate;
 
     private String title;
 

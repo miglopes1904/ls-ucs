@@ -3,7 +3,7 @@ package com.learningscorecard.ucs.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learningscorecard.ucs.exception.ExceptionResponseBody;
-import com.learningscorecard.ucs.model.entity.Grade;
+import com.learningscorecard.ucs.model.entity.GradeValue;
 import com.learningscorecard.ucs.model.entity.Rank;
 import com.learningscorecard.ucs.model.entity.UC;
 import com.learningscorecard.ucs.model.entity.XP;
@@ -14,7 +14,6 @@ import com.learningscorecard.ucs.model.response.LSResponse;
 import com.learningscorecard.ucs.repository.UCRepository;
 import com.learningscorecard.ucs.security.jwt.JwtUtils;
 import com.learningscorecard.ucs.util.EntityUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,15 +22,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,13 +46,13 @@ class ManagementControllerTest {
     private final UC UC_NOT_ACTIVE = UC.builder().id(ID_NOT_ACTIVE).name("Unit Course").acronym("UC")
             .active(Boolean.FALSE).build();
     private final UpdateRankRequest RANK_OK = UpdateRankRequest.builder().id(ID_STARTED)
-            .ranks(Arrays.asList(new Rank("name", 78))).build();
+            .ranks(Arrays.asList(new Rank("name", 78L))).build();
     private final UpdateRankRequest RANK_NOK = UpdateRankRequest.builder().id(ID_NOT_EXIST)
-            .ranks(Arrays.asList(new Rank("name", 78))).build();
+            .ranks(Arrays.asList(new Rank("name", 78L))).build();
     private final UpdateGradeRequest GRADE_OK = UpdateGradeRequest.builder().id(ID_STARTED)
-            .grades(Arrays.asList(new Grade("name", 78))).build();
+            .grades(Arrays.asList(new GradeValue("name", 78))).build();
     private final UpdateGradeRequest GRADE_NOK = UpdateGradeRequest.builder().id(ID_NOT_EXIST)
-            .grades(Arrays.asList(new Grade("name", 78))).build();
+            .grades(Arrays.asList(new GradeValue("name", 78))).build();
     private final UpdateXPRequest XP_OK = UpdateXPRequest.builder().id(ID_STARTED)
             .XPs(Arrays.asList(new XP("name", 7800L, 70))).build();
     private final UpdateXPRequest XP_NOK = UpdateXPRequest.builder().id(ID_NOT_EXIST)

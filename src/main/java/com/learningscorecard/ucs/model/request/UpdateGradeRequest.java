@@ -1,6 +1,6 @@
 package com.learningscorecard.ucs.model.request;
 
-import com.learningscorecard.ucs.model.entity.Grade;
+import com.learningscorecard.ucs.model.entity.GradeValue;
 import lombok.*;
 
 import java.util.List;
@@ -15,5 +15,5 @@ public class UpdateGradeRequest {
 
     private UUID id;
 
-    private List<Grade> grades;
+    private List<GradeValue> grades;
 }

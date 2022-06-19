@@ -6,17 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @NoArgsConstructor
 public class LSResponse<T> {
 
+    private final LocalDateTime timestamp = LocalDateTime.now();
+
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     private T data;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.SSS")
-    private final Date timestamp = new Date();
 
     public LSResponse(T data) {
         this.data = data;

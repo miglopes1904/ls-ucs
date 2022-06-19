@@ -1,5 +1,7 @@
 package com.learningscorecard.ucs.controller;
 
+import com.learningscorecard.ucs.model.dto.JournalEntry;
+import com.learningscorecard.ucs.model.dto.LeaderboardEntry;
 import com.learningscorecard.ucs.model.dto.UCDTO;
 import com.learningscorecard.ucs.model.request.CreateUCRequest;
 import com.learningscorecard.ucs.model.response.LSResponse;
@@ -27,8 +29,18 @@ public class UCController {
     }
 
     @GetMapping("/{id}")
-    public LSResponse<UCDTO> getById(@PathVariable String id) {
-        return new LSResponse<>(service.getByID(UUID.fromString(id)));
+    public LSResponse<UCDTO> getById(@PathVariable UUID id) {
+        return new LSResponse<>(service.getByID(id));
+    }
+
+    @GetMapping("/leaderboard/{id}/{type}")
+    public LSResponse<List<LeaderboardEntry>> getLeaderboard(@PathVariable UUID id, @PathVariable String type) {
+        return new LSResponse<>(service.getLeaderboard(id, type.toLowerCase()));
+    }
+
+    @GetMapping("/journal/{id}")
+    public LSResponse<List<JournalEntry>> getJournal(@PathVariable UUID id) {
+        return new LSResponse<>(service.getJournal(id));
     }
 
     @PostMapping
@@ -37,7 +49,7 @@ public class UCController {
     }
 
     @DeleteMapping("/{id}")
-    public LSResponse<String> delete(@PathVariable String id) {
-        return new LSResponse<>(service.delete(UUID.fromString(id)));
+    public LSResponse<String> delete(@PathVariable UUID id) {
+        return new LSResponse<>(service.delete(id));
     }
 }

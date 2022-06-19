@@ -15,9 +15,11 @@ spring:
     properties.mail.smtp:
       auth: true
       starttls.enable: true
-server:
-  servlet:
-    context-path: /ucs
+
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
 ls:
   auth:
     security:

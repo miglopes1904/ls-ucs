@@ -62,7 +62,7 @@ public class JWTVerificationFilter extends OncePerRequestFilter {
 */
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     body.getSubject(),
-                    null,
+                    authorizationHeader,
                     simpleGrantedAuthorities
             );
             //authentication.setDetails(type);

@@ -16,19 +16,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Avatar {
 
-    @Column(name = "value")
-    @Enumerated(EnumType.STRING)
-    private AvatarValue value;
+    private String value;
     private UUID uc;
 
-    public Avatar(AvatarValue value) {
+    public Avatar(String value) {
         this.value = value;
     }
 
-
-    public enum AvatarValue {
-        USER,
-        EAGLE,
-        BEAR
-    }
 }

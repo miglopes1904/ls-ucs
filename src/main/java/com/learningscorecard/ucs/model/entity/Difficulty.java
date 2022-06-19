@@ -17,9 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Progress {
-
-    public static final String NEWBIE = "Newbie";
+public class Difficulty {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -31,14 +29,7 @@ public class Progress {
 
     private UUID uc;
 
-    @Builder.Default
-    private String rank = NEWBIE;
-
-    @Builder.Default
-    private Long value = 0L;
-
     @ElementCollection
     @Builder.Default
-    private List<CompletedQuest> completedQuests = new ArrayList<>();
-
+    private List<ContentDifficulty> contents = new ArrayList<>();
 }

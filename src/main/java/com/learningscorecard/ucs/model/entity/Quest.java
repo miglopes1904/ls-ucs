@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -30,16 +30,16 @@ public class Quest {
     private String type;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "validation_date")
-    private Date validationDate;
+    private LocalDate validationDate;
 
     @Column(name = "last_chance_date")
-    private Date lastChanceDate;
+    private LocalDate lastChanceDate;
 
     private String title;
 

@@ -79,7 +79,7 @@ public class UC {
 
     @Builder.Default
     @ElementCollection
-    private List<Grade> grades = new ArrayList<>();
+    private List<GradeValue> gradeValues = new ArrayList<>();
 
     @ElementCollection
     @Builder.Default

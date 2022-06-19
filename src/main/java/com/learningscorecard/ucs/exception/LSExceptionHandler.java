@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @ControllerAdvice
@@ -26,7 +27,7 @@ public class LSExceptionHandler {
                         .builder()
                         .message(e.getMessage())
                         .detail(e.getDetail())
-                        .timestamp(new Date())
+                        .timestamp(LocalDateTime.now())
                         .build(),
                 e.getHttpStatus()
         );
@@ -40,7 +41,7 @@ public class LSExceptionHandler {
                 ExceptionResponseBody
                         .builder()
                         .message("Internal error has occurred")
-                        .timestamp(new Date())
+                        .timestamp(LocalDateTime.now())
                         .build(),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
@@ -54,7 +55,7 @@ public class LSExceptionHandler {
                 ExceptionResponseBody
                         .builder()
                         .message("Access denied")
-                        .timestamp(new Date())
+                        .timestamp(LocalDateTime.now())
                         .build(),
                 HttpStatus.FORBIDDEN
         );
