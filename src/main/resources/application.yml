@@ -4,7 +4,6 @@ spring:
     username: j5hk61xjp8fio8vm
     password: g7uvhh97e0yb9cd8
     driverClassName: org.mariadb.jdbc.Driver
-    max-active: 3
   jpa:
     hibernate.ddl-auto: validate
 
