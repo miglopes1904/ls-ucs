@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMIN')")
 public class UCController {
 
     private final UCService service;
@@ -24,6 +24,7 @@ public class UCController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public LSResponse<List<UCDTO>> getAll() {
         return new LSResponse<>(service.getAll());
     }
@@ -39,16 +40,19 @@ public class UCController {
     }
 
     @GetMapping("/journal/{id}")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public LSResponse<List<JournalEntry>> getJournal(@PathVariable UUID id) {
         return new LSResponse<>(service.getJournal(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public LSResponse<String> create(@RequestBody CreateUCRequest request, Authentication authentication) {
         return new LSResponse<>(service.create(request, authentication));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public LSResponse<String> delete(@PathVariable UUID id) {
         return new LSResponse<>(service.delete(id));
     }

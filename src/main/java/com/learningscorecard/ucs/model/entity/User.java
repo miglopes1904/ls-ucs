@@ -26,11 +26,8 @@ public class User {
     public static final String TO_BE_DEFINED = "To be defined";
     //User related
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Builder.Default

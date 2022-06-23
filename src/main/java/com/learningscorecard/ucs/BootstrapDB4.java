@@ -1,3 +1,4 @@
+/*
 package com.learningscorecard.ucs;
 
 import com.learningscorecard.ucs.model.entity.UC;
@@ -41,3 +42,4 @@ public class BootstrapDB4 implements CommandLineRunner {
     }
 
 }
+*/

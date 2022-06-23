@@ -9,6 +9,7 @@ import com.learningscorecard.ucs.model.request.UpdateGradeRequest;
 import com.learningscorecard.ucs.model.request.UpdateRankRequest;
 import com.learningscorecard.ucs.model.request.UpdateXPRequest;
 import com.learningscorecard.ucs.repository.UCRepository;
+import com.learningscorecard.ucs.service.impl.ManagementServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-class ManagementServiceTest {
+class ManagementServiceImplTest {
 
     private final UCRepository repository = mock(UCRepository.class);
     private UUID ID_NOT_EXIST = UUID.fromString("1bdd9c82-e902-4a45-9292-afd0fa7a2a15");
@@ -45,11 +46,11 @@ class ManagementServiceTest {
             .XPs(Arrays.asList(new XP("name", 7800L, 70))).build();
     private final UpdateXPRequest XP_NOK = UpdateXPRequest.builder().id(ID_NOT_EXIST)
             .XPs(Arrays.asList(new XP("name", 7800L, 70))).build();
-    private ManagementService service;
+    private ManagementServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        service = new ManagementService(repository);
+        service = new ManagementServiceImpl(repository);
         setupRepo();
     }
 

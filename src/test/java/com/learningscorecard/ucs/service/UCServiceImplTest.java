@@ -17,6 +17,7 @@ import com.learningscorecard.ucs.model.request.ontology.Mapping;
 import com.learningscorecard.ucs.model.request.ontology.MappingPOJO;
 import com.learningscorecard.ucs.model.request.ontology.SyllabusContent;
 import com.learningscorecard.ucs.repository.UCRepository;
+import com.learningscorecard.ucs.service.impl.UCServiceImpl;
 import com.learningscorecard.ucs.util.EntityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UCServiceTest {
+public class UCServiceImplTest {
 
     private static final String ROLE_ = "ROLE_";
     private final UUID ID_1 = UUID.fromString("1bdd9c82-e902-4a45-9292-afd0fa7a2a16");
@@ -140,11 +141,11 @@ public class UCServiceTest {
             );
     private final EntityUtils entityUtils = mock(EntityUtils.class);
     private final OntologyClient ontologyClient = mock(OntologyClient.class);
-    private UCService service;
+    private UCServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        service = new UCService(repository, mapper, entityUtils, ontologyClient);
+        service = new UCServiceImpl(repository, mapper, entityUtils, ontologyClient);
         setupRepo();
     }
 

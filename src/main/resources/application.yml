@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:mydb
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:mariadb://j5zntocs2dn6c3fj.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/zi4rcgvo4lslezx1
+    username: j5hk61xjp8fio8vm
+    password: g7uvhh97e0yb9cd8
+    driverClassName: org.mariadb.jdbc.Driver
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: validate
 
   mail:
     host: smtp.gmail.com

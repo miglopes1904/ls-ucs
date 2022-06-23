@@ -1,3 +1,4 @@
+/*
 package com.learningscorecard.ucs;
 
 import com.learningscorecard.ucs.model.entity.Guild;
@@ -49,3 +50,4 @@ public class BootstrapDB3 implements CommandLineRunner {
     }
 
 }
+*/
