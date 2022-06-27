@@ -163,7 +163,7 @@ class UCControllerTest {
         setUp();
         MvcResult result = mockMvc.perform(get("/")
                         .header("Authorization", "Bearer " +
-                                jwtUtils.generate(ID_AUTH, "TEACHER")))
+                                jwtUtils.generate(ID_AUTH, "ADMIN")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();

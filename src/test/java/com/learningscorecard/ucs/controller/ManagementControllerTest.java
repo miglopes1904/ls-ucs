@@ -68,9 +68,6 @@ class ManagementControllerTest {
     ObjectMapper mapper;
 
     @MockBean
-    EntityUtils utils;
-
-    @MockBean
     UCRepository repository;
 
 
