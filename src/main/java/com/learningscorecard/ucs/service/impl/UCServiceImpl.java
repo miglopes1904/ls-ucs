@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.learningscorecard.ucs.client.OntologyClient;
 import com.learningscorecard.ucs.exception.LSException;
 import com.learningscorecard.ucs.model.dto.*;
+import com.learningscorecard.ucs.model.dto.teacher.UCDTO4Teacher;
 import com.learningscorecard.ucs.model.entity.*;
 import com.learningscorecard.ucs.model.mapper.UCMapper;
 import com.learningscorecard.ucs.model.request.CreateUCRequest;
@@ -40,12 +41,14 @@ public class UCServiceImpl implements UCService {
     }
 
     @Override
-    public List<UCDTO> getAll() {
+    public List<UCDTO4Teacher> getAll() {
         return mapper.toDTOs(repository.findAll());
     }
 
     @Override
-    public UCDTO getByID(UUID id) {
+    public UCDTO getByID(UUID id, Authentication authentication) {
+        String type = authentication.getAuthorities().stream().findFirst().get().getAuthority();
+
         UC response = getOrElseThrow(id);
         Counts counts = new Counts();
 
@@ -56,7 +59,12 @@ public class UCServiceImpl implements UCService {
         List<CalendarEntry> calendarEntries = new ArrayList<>();
         List<PlanningEntry> planningEntries = new ArrayList<>();
 
-        UCDTO dto =  mapper.toDTO(response);
+        UCDTO dto;
+
+        if (type.equals("ROLE_TEACHER"))
+            dto = mapper.toDTO(response);
+        else
+            dto = mapper.toDTO4Student(response);
 
         dto.getQuests().forEach(quest -> {
             calendarEntries.add(mapCalendarEntry(quest));
@@ -175,7 +183,7 @@ public class UCServiceImpl implements UCService {
                         .mapToLong(student -> getProgress(id, student)
                                 .getValue()).sum();
 
-                response.add(new LeaderboardEntry(guild.getId(),
+                response.add(new LeaderboardEntry(
                         guild.getName(),
                         guild.getAlliance(),
                         total,
@@ -193,7 +201,7 @@ public class UCServiceImpl implements UCService {
 
                 Alliance alliance = getAlliance(uc, student);
 
-                builder.id(student.getId()).name(student.getUsername())
+                builder.name(student.getUsername())
                         .avatar(avatar.getValue()).alliance(alliance.getName());
 
                 Progress progress = getProgress(id, student);
@@ -221,7 +229,7 @@ public class UCServiceImpl implements UCService {
                     .findFirst().orElse(new Avatar("USER"));
             Alliance alliance = getAlliance(uc, student);
 
-            builder.id(student.getId()).name(student.getUsername())
+            builder.name(student.getUsername())
                     .avatar(avatar.getValue()).alliance(alliance.getName());
 
             Progress progress = getProgress(id, student);

@@ -7,6 +7,8 @@ import com.learningscorecard.ucs.model.dto.Counts;
 import com.learningscorecard.ucs.model.dto.JournalEntry;
 import com.learningscorecard.ucs.model.dto.LeaderboardEntry;
 import com.learningscorecard.ucs.model.dto.UCDTO;
+import com.learningscorecard.ucs.model.dto.student.UCDTO4Student;
+import com.learningscorecard.ucs.model.dto.teacher.UCDTO4Teacher;
 import com.learningscorecard.ucs.model.entity.*;
 import com.learningscorecard.ucs.model.mapper.QuestMapperImpl;
 import com.learningscorecard.ucs.model.mapper.StudentMapperImpl;
@@ -45,6 +47,7 @@ public class UCServiceImplTest {
     private final UUID ID_1 = UUID.fromString("1bdd9c82-e902-4a45-9292-afd0fa7a2a16");
     private final UUID ID_AUTH = UUID.fromString("1bdd9c82-e902-4a45-9292-afd0fa7a2a16");
     private final UUID ID_NOT_FOUND = UUID.fromString("1bdd9c82-e902-4a45-9292-afd0fa7a2a17");
+
     private final UC UC_1 = UC.builder().name("Unit Course").academicYear("2022/2023").id(ID_1)
             .quests(List.of(
                     Quest.builder().id(UUID.randomUUID()).title("quest1").description("desc1")
@@ -70,6 +73,9 @@ public class UCServiceImplTest {
                             .alliances(List.of(
                                     new Alliance("MEI", ID_1)
                             ))
+                            .email("EMAIL")
+                            .name("STUDENT NAME")
+                            .number(93123L)
                             .avatars(List.of(new Avatar("EAGLE", ID_1)))
                             .progresses(List.of(
                                     Progress.builder()
@@ -91,6 +97,8 @@ public class UCServiceImplTest {
                                             )).build()
                             )).build()
             ))
+            .teachers(List.of(Teacher.builder().name("TEACHER NAME").id(UUID.randomUUID())
+                    .email("teacheremail").lastLogin(LocalDate.now()).build()))
             .guilds(List.of(
                     Guild.builder()
                             .id(ID_1)
@@ -131,6 +139,9 @@ public class UCServiceImplTest {
     public final Authentication AUTH_TEACHER =
             new UsernamePasswordAuthenticationToken(ID_AUTH.toString(), null,
                     Arrays.asList(new SimpleGrantedAuthority(ROLE_ + "TEACHER")));
+    public final Authentication AUTH_STUDENT =
+            new UsernamePasswordAuthenticationToken(ID_AUTH.toString(), null,
+                    Arrays.asList(new SimpleGrantedAuthority(ROLE_ + "STUDENT")));
     private final CreateUCRequest REQUEST_OK = CreateUCRequest.builder().name("Unit Course")
             .academicYear("2022/2023").alliances(Arrays.asList("A", "B", "C")).acronym("UC").semester(1).build();
     private final CreateUCRequest REQUEST_NOK = CreateUCRequest.builder().name("UC")
@@ -151,20 +162,20 @@ public class UCServiceImplTest {
 
     @Test
     public void getUCsOK() {
-        List<UCDTO> response = service.getAll();
+        List<UCDTO4Teacher> response = service.getAll();
 
         assertEquals(2, response.size());
-        assertEquals(UCDTO.class, response.get(0).getClass());
+        assertEquals(UCDTO4Teacher.class, response.get(0).getClass());
     }
 
     @Test
-    public void getUCByIdOK() {
+    public void getUCByIdTeacherOK() {
         doReturn(List.of(new Mapping(UUID.randomUUID(), List.of(new MappingPOJO(UUID.randomUUID(), "title")))))
                 .when(ontologyClient).getMappings(eq(ID_1));
         doReturn(List.of(SyllabusContent.builder().id(UUID.randomUUID()).title("title").level(1).build()))
                 .when(ontologyClient).getContents(eq(ID_1));
 
-        UCDTO response = service.getByID(ID_1);
+        UCDTO response = service.getByID(ID_1, AUTH_TEACHER);
 
         assertEquals(ID_1, response.getId());
         Counts counts = response.getCounts();
@@ -175,13 +186,34 @@ public class UCServiceImplTest {
         assertEquals(1, counts.getContents());
         assertEquals(4, response.getPlanning().size());
         assertEquals(4, response.getCalendar().size());
-        assertEquals(UCDTO.class, response.getClass());
+        assertEquals(UCDTO4Teacher.class, response.getClass());
+    }
+
+    @Test
+    public void getUCByIdStudentOK() {
+        doReturn(List.of(new Mapping(UUID.randomUUID(), List.of(new MappingPOJO(UUID.randomUUID(), "title")))))
+                .when(ontologyClient).getMappings(eq(ID_1));
+        doReturn(List.of(SyllabusContent.builder().id(UUID.randomUUID()).title("title").level(1).build()))
+                .when(ontologyClient).getContents(eq(ID_1));
+
+        UCDTO response = service.getByID(ID_1, AUTH_STUDENT);
+
+        assertEquals(ID_1, response.getId());
+        Counts counts = response.getCounts();
+        assertEquals(1, counts.getClassAttendances());
+        assertEquals(1, counts.getQuizzes());
+        assertEquals(1, counts.getExercises());
+        assertEquals(1, counts.getPracticalAssignments());
+        assertEquals(1, counts.getContents());
+        assertEquals(4, response.getPlanning().size());
+        assertEquals(4, response.getCalendar().size());
+        assertEquals(UCDTO4Student.class, response.getClass());
     }
 
     @Test
     public void getUCByIdNotFound() {
 
-        LSException thrown = assertThrows(LSException.class, () -> service.getByID(ID_NOT_FOUND));
+        LSException thrown = assertThrows(LSException.class, () -> service.getByID(ID_NOT_FOUND, AUTH_TEACHER));
 
         assertEquals("UC does not exist", thrown.getMessage());
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getHttpStatus());
@@ -258,7 +290,6 @@ public class UCServiceImplTest {
         List<LeaderboardEntry> response = service.getLeaderboard(ID_1, "guilds");
 
         assertEquals(1, response.size());
-        assertEquals(ID_1, response.get(0).getId());
         assertEquals(15000L, response.get(0).getXP());
         assertEquals("guild1", response.get(0).getName());
         assertEquals("MEI", response.get(0).getAlliance());

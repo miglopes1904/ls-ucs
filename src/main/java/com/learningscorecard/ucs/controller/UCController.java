@@ -3,6 +3,7 @@ package com.learningscorecard.ucs.controller;
 import com.learningscorecard.ucs.model.dto.JournalEntry;
 import com.learningscorecard.ucs.model.dto.LeaderboardEntry;
 import com.learningscorecard.ucs.model.dto.UCDTO;
+import com.learningscorecard.ucs.model.dto.teacher.UCDTO4Teacher;
 import com.learningscorecard.ucs.model.request.CreateUCRequest;
 import com.learningscorecard.ucs.model.response.LSResponse;
 import com.learningscorecard.ucs.service.UCService;
@@ -25,13 +26,13 @@ public class UCController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public LSResponse<List<UCDTO>> getAll() {
+    public LSResponse<List<UCDTO4Teacher>> getAll() {
         return new LSResponse<>(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public LSResponse<UCDTO> getById(@PathVariable UUID id) {
-        return new LSResponse<>(service.getByID(id));
+    public LSResponse<UCDTO> getById(@PathVariable UUID id, Authentication authentication) {
+        return new LSResponse<>(service.getByID(id, authentication));
     }
 
     @GetMapping("/leaderboard/{id}/{type}")

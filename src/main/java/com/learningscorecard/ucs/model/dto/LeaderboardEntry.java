@@ -11,7 +11,6 @@ import java.util.UUID;
 @Builder
 public class LeaderboardEntry {
 
-    private UUID id;
     private String name;
     private String alliance;
     private Long XP;

@@ -1,10 +1,12 @@
 package com.learningscorecard.ucs.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.learningscorecard.ucs.model.entity.*;
 import com.learningscorecard.ucs.model.request.ontology.Mapping;
 import com.learningscorecard.ucs.model.request.ontology.SyllabusContent;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +14,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Builder
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UCDTO {
@@ -32,12 +36,6 @@ public class UCDTO {
     private String academicYear;
 
     private Integer semester;
-
-    @Builder.Default
-    private List<StudentDTO> students = new ArrayList<>();
-
-    @Builder.Default
-    private List<TeacherDTO> teachers = new ArrayList<>();
 
     @Builder.Default
     private List<QuestDTO> quests = new ArrayList<>();

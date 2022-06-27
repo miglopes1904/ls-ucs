@@ -8,6 +8,7 @@ import com.learningscorecard.ucs.model.entity.Progress;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,4 +35,7 @@ public class StudentDTO extends UserDTO {
 
     @Builder.Default
     private List<Difficulty> difficulties = new ArrayList<>();
+
+    @JsonProperty("last_login")
+    private LocalDate lastLogin;
 }

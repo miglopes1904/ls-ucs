@@ -1,6 +1,7 @@
 package com.learningscorecard.ucs.model.mapper;
 
 import com.learningscorecard.ucs.model.dto.StudentDTO;
+import com.learningscorecard.ucs.model.dto.student.StudentDTO4Student;
 import com.learningscorecard.ucs.model.entity.Student;
 import org.mapstruct.*;
 
@@ -17,6 +18,9 @@ public interface StudentMapper {
 
     @Named("StudentDTOs")
     List<StudentDTO> toDTOList(List<Student> student);
+
+    @Named("StudentDTOs4Student")
+    List<StudentDTO4Student> toDTO4StudentList(List<Student> student);
 
     @Named("Students")
     List<Student> toStudentList(List<StudentDTO> studentDTO);

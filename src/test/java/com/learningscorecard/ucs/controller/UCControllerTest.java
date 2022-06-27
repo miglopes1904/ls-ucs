@@ -9,6 +9,7 @@ import com.learningscorecard.ucs.model.dto.Counts;
 import com.learningscorecard.ucs.model.dto.JournalEntry;
 import com.learningscorecard.ucs.model.dto.LeaderboardEntry;
 import com.learningscorecard.ucs.model.dto.UCDTO;
+import com.learningscorecard.ucs.model.dto.student.UCDTO4Student;
 import com.learningscorecard.ucs.model.entity.*;
 import com.learningscorecard.ucs.model.request.CreateUCRequest;
 import com.learningscorecard.ucs.model.request.ontology.Mapping;
@@ -74,6 +75,7 @@ class UCControllerTest {
             .students(Lists.newArrayList(
                     Student.builder()
                             .id(UUID.randomUUID())
+                            .username("username")
                             .alliances(List.of(
                                     new Alliance("MEI", ID_1)
                             ))
@@ -205,6 +207,36 @@ class UCControllerTest {
     }
 
     @Test
+    public void getUCByIdStudent() throws Exception{
+        doReturn(List.of(new Mapping(UUID.randomUUID(), List.of(new MappingPOJO(UUID.randomUUID(), "title")))))
+                .when(ontologyClient).getMappings(eq(ID_1));
+        doReturn(List.of(SyllabusContent.builder().id(UUID.randomUUID()).title("title").level(1).build()))
+                .when(ontologyClient).getContents(eq(ID_1));
+        setUp();
+        MvcResult result = mockMvc.perform(get("/"+ ID_1)
+                        .header("Authorization", "Bearer " +
+                                jwtUtils.generate(ID_AUTH, "STUDENT")))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        UCDTO response =  mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<LSResponse<UCDTO4Student>>() {
+                }).getData();
+
+        assertEquals(ID_1, response.getId());
+        Counts counts = response.getCounts();
+        assertEquals(1, counts.getClassAttendances());
+        assertEquals(1, counts.getQuizzes());
+        assertEquals(1, counts.getExercises());
+        assertEquals(1, counts.getPracticalAssignments());
+        assertEquals(1, counts.getContents());
+        assertEquals(4, response.getPlanning().size());
+        assertEquals(4, response.getCalendar().size());
+        assertEquals(UCDTO4Student.class, response.getClass());
+    }
+
+    @Test
     public void getUCByIdNotFound() throws Exception{
         setUp();
         MvcResult result = mockMvc.perform(get("/"+ ID_NOT_FOUND)
@@ -331,7 +363,6 @@ class UCControllerTest {
 
 
         assertEquals(1, response.size());
-        assertEquals(ID_1, response.get(0).getId());
         assertEquals(15000L, response.get(0).getXP());
         assertEquals("guild1", response.get(0).getName());
         assertEquals("MEI", response.get(0).getAlliance());
@@ -353,7 +384,7 @@ class UCControllerTest {
 
 
         assertEquals(1, response.size());
-        assertEquals("To be defined", response.get(0).getName());
+        assertEquals("username", response.get(0).getName());
         assertEquals(15000L, response.get(0).getXP());
         assertEquals("MEI", response.get(0).getAlliance());
     }
@@ -375,7 +406,7 @@ class UCControllerTest {
 
 
         assertEquals(1, response.size());
-        assertEquals("To be defined", response.get(0).getName());
+        assertEquals("username", response.get(0).getName());
         assertEquals(1500L, response.get(0).getXP());
         assertEquals("MEI", response.get(0).getAlliance());
     }
