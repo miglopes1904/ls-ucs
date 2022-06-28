@@ -21,6 +21,7 @@ public class Difficulty {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
+    @Column(columnDefinition = "BINARY(16)")
     private UUID uc;
 
     @ElementCollection

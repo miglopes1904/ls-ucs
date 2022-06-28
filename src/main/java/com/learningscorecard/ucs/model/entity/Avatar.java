@@ -17,6 +17,8 @@ import java.util.UUID;
 public class Avatar {
 
     private String value;
+
+    @Column(columnDefinition = "BINARY(16)")
     private UUID uc;
 
     public Avatar(String value) {

@@ -46,7 +46,7 @@ public class Guild {
     @JoinColumn(name = "uc_id")
     private UC ownerUC;
 
-    @Column(name = "uc_id", insertable = false, updatable = false)
+    @Column(name = "uc_id", insertable = false, updatable = false, columnDefinition = "BINARY(16)")
     private UUID uc;
 
     @Builder.Default

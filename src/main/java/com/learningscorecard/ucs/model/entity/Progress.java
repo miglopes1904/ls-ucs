@@ -23,6 +23,7 @@ public class Progress {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
+    @Column(columnDefinition = "BINARY(16)")
     private UUID uc;
 
     @Builder.Default

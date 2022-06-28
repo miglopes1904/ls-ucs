@@ -2,6 +2,7 @@ package com.learningscorecard.ucs.model.entity;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public class Alliance {
 
     private String name;
 
+    @Column(columnDefinition = "BINARY(16)")
     private UUID uc;
 
 }
