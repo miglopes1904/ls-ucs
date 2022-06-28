@@ -61,7 +61,7 @@ public class UCServiceImpl implements UCService {
 
         UCDTO dto;
 
-        if (type.equals("ROLE_TEACHER"))
+        if (type.equals("ROLE_TEACHER") || type.equals("ROLE_ADMIN"))
             dto = mapper.toDTO(response);
         else
             dto = mapper.toDTO4Student(response);
