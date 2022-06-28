@@ -47,7 +47,7 @@ public class UCDTO {
     private List<Rank> ranks = new ArrayList<>();
 
     @Builder.Default
-    private List<GradeValue> grades = new ArrayList<>();
+    private List<GradeValue> gradeValues = new ArrayList<>();
 
     @Builder.Default
     private List<XP> XPs = new ArrayList<>();
