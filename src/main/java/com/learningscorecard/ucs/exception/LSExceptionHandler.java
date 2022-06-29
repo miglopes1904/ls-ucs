@@ -35,6 +35,7 @@ public class LSExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ExceptionResponseBody> genericExceptionHandler(Exception e) {
+        e.printStackTrace();
         log.error(EXCEPTION_THROWN_MESSAGE_CAUSE,
                 e.getClass().getSimpleName(), e.getMessage(), e.getStackTrace()[0]);
         return new ResponseEntity<>(

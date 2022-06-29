@@ -46,7 +46,7 @@ public class Student extends User {
     @Builder.Default
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "student_guild",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "guild_id"))
     private List<Guild> guilds = new ArrayList<>();
 

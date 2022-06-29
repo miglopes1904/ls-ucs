@@ -39,8 +39,9 @@ public class Guild {
 
     private String alliance;
 
+    @Builder.Default
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @ManyToOne
     @JoinColumn(name = "uc_id")
