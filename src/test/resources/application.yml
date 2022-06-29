@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    dialect: org.hibernate.dialect.MariaDB103Dialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: office.learningscorecard@gmail.com
+    password: LearningScorecard123
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+
+      #jpa:
+      #properties:
+      #hibernate:
+      #dialect: org.hibernate.dialect.MariaDB103Dialect
+
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+ls:
+  auth:
+    security:
+      secret: 2ae0397612084557a0d946a6bb05fb6e
+      jwtExpirationMs: 86400000LSocketFactory

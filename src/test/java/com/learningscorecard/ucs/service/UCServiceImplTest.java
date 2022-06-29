@@ -10,10 +10,7 @@ import com.learningscorecard.ucs.model.dto.UCDTO;
 import com.learningscorecard.ucs.model.dto.student.UCDTO4Student;
 import com.learningscorecard.ucs.model.dto.teacher.UCDTO4Teacher;
 import com.learningscorecard.ucs.model.entity.*;
-import com.learningscorecard.ucs.model.mapper.QuestMapperImpl;
-import com.learningscorecard.ucs.model.mapper.StudentMapperImpl;
-import com.learningscorecard.ucs.model.mapper.TeacherMapperImpl;
-import com.learningscorecard.ucs.model.mapper.UCMapperImpl;
+import com.learningscorecard.ucs.model.mapper.*;
 import com.learningscorecard.ucs.model.request.CreateUCRequest;
 import com.learningscorecard.ucs.model.request.ontology.Mapping;
 import com.learningscorecard.ucs.model.request.ontology.MappingPOJO;
@@ -148,7 +145,8 @@ public class UCServiceImplTest {
             .academicYear("2022/2023").alliances(Arrays.asList("A", "B", "C")).acronym("UC").semester(1).build();
     private final UCRepository repository = mock(UCRepository.class);
     private final UCMapperImpl mapper = new UCMapperImpl(
-            new StudentMapperImpl(), new TeacherMapperImpl(), new QuestMapperImpl()
+            new StudentMapperImpl(), new TeacherMapperImpl(), new QuestMapperImpl(),
+            new GuildMapperImpl(new ExtStudentMapperImpl())
             );
     private final EntityUtils entityUtils = mock(EntityUtils.class);
     private final OntologyClient ontologyClient = mock(OntologyClient.class);
