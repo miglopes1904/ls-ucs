@@ -33,4 +33,6 @@ public class UserDTO {
 
     private List<Avatar> avatars;
 
+    private Boolean activated;
+
 }
