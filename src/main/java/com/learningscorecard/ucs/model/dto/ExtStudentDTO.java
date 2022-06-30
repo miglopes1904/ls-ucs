@@ -1,5 +1,6 @@
 package com.learningscorecard.ucs.model.dto;
 
+import com.learningscorecard.ucs.model.entity.Alliance;
 import com.learningscorecard.ucs.model.entity.Avatar;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +24,7 @@ public class ExtStudentDTO {
     private String email;
 
     private List<Avatar> avatars;
+
+    private List<Alliance> alliances;
 
 }
