@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,10 +27,13 @@ public class ExtStudentDTO {
 
     private String email;
 
-    private List<Avatar> avatars;
+    @Builder.Default
+    private List<Avatar> avatars = new ArrayList<>();
 
-    private List<Alliance> alliances;
+    @Builder.Default
+    private List<Alliance> alliances = new ArrayList<>();
 
-    private List<Progress> progresses;
+    @Builder.Default
+    private List<Progress> progresses = new ArrayList<>();
 
 }
