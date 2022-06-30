@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,9 @@ public class GuildDTO {
 
     @JsonProperty("project_title")
     private String projectTitle;
+
+    @JsonProperty("created_at")
+    private LocalDate createdAt;
 
     @JsonProperty("project_description")
     private String projectDescription;
