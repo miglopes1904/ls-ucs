@@ -23,4 +23,4 @@ ls:
   auth:
     security:
       secret: 2ae0397612084557a0d946a6bb05fb6e
-      jwtExpirationMs: 86400000LSocketFactory
+      jwtExpirationMs: 86400000

@@ -26,6 +26,8 @@ public class GuildDTO {
     @JsonProperty("created_at")
     private LocalDate createdAt;
 
+    private String alliance;
+
     @JsonProperty("project_description")
     private String projectDescription;
 
