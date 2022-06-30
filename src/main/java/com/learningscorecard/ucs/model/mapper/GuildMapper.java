@@ -1,6 +1,7 @@
 package com.learningscorecard.ucs.model.mapper;
 
 import com.learningscorecard.ucs.model.dto.GuildDTO;
+import com.learningscorecard.ucs.model.dto.student.GuildDTO4Student;
 import com.learningscorecard.ucs.model.entity.Guild;
 import org.mapstruct.*;
 
@@ -19,6 +20,10 @@ public interface GuildMapper {
     @Named("GuildDTOs")
     @Mapping(target = "students", source = "students", qualifiedByName = "ExtStudentDTOs")
     List<GuildDTO> toDTOs(List<Guild> guild);
+
+    @Named("GuildDTOs4Student")
+    @Mapping(target = "students", source = "students", qualifiedByName = "ExtStudentDTOs4Student")
+    List<GuildDTO4Student> toDTOs4Student(List<Guild> guild);
 
     @Named("Guilds")
     @Mapping(target = "students", source = "students", qualifiedByName = "ExtStudents")

@@ -1,22 +1,20 @@
-package com.learningscorecard.ucs.model.dto;
+package com.learningscorecard.ucs.model.dto.student;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.learningscorecard.ucs.model.entity.Alliance;
 import com.learningscorecard.ucs.model.entity.Avatar;
-import com.learningscorecard.ucs.model.entity.Progress;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
-
 @Data
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExtStudentDTO {
+public class ExtStudentDTO4Student {
 
     private UUID id;
 
@@ -29,7 +27,4 @@ public class ExtStudentDTO {
     private List<Avatar> avatars;
 
     private List<Alliance> alliances;
-
-    private List<Progress> progresses;
-
 }

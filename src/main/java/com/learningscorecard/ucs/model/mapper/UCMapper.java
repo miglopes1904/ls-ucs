@@ -24,7 +24,7 @@ public interface UCMapper {
     @Mapping(target = "students", source = "students", qualifiedByName = "StudentDTOs4Student")
     @Mapping(target = "teachers", source = "teachers", qualifiedByName = "TeacherDTOs4Student")
     @Mapping(target = "quests", source = "quests", qualifiedByName = "QuestDTOs")
-    @Mapping(target = "guilds", source = "guilds", qualifiedByName = "GuildDTOs")
+    @Mapping(target = "guilds", source = "guilds", qualifiedByName = "GuildDTOs4Student")
     UCDTO4Student toDTO4Student(UC uc);
 
     @Named("UC")

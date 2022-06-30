@@ -1,6 +1,7 @@
 package com.learningscorecard.ucs.model.dto.student;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.learningscorecard.ucs.model.dto.GuildDTO;
 import com.learningscorecard.ucs.model.dto.TeacherDTO;
 import com.learningscorecard.ucs.model.dto.UCDTO;
 import lombok.*;
@@ -24,4 +25,6 @@ public class UCDTO4Student extends UCDTO {
     @Builder.Default
     private List<TeacherDTO4Student> teachers = new ArrayList<>();
 
+    @Builder.Default
+    private List<GuildDTO4Student> guilds = new ArrayList<>();
 }
