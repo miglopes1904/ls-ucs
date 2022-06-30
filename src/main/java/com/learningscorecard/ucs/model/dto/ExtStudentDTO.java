@@ -21,6 +21,8 @@ public class ExtStudentDTO {
 
     private String username;
 
+    private Long number;
+
     private String email;
 
     private List<Avatar> avatars;
