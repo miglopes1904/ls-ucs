@@ -54,7 +54,8 @@ public class UCServiceImpl implements UCService {
 
         List<Mapping> mappings = ontologyClient.getMappings(id);
         List<SyllabusContent> contents = ontologyClient.getContents(id);
-        counts.setContents((int) contents.stream().count());
+        counts.setContents((int) contents.stream()
+                .filter(syllabusContent -> syllabusContent.getLevel() == 1).count());
 
         List<CalendarEntry> calendarEntries = new ArrayList<>();
         List<PlanningEntry> planningEntries = new ArrayList<>();
