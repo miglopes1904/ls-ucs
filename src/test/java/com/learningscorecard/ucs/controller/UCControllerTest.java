@@ -178,7 +178,7 @@ class UCControllerTest {
 
     @Test
     public void getUCById() throws Exception{
-        doReturn(List.of(new Mapping(UUID.randomUUID(), List.of(new MappingPOJO(UUID.randomUUID(), "title")))))
+        doReturn(List.of(new Mapping(UUID.randomUUID(), "title", List.of(new MappingPOJO(UUID.randomUUID(), "title")))))
                 .when(ontologyClient).getMappings(eq(ID_1));
         doReturn(List.of(SyllabusContent.builder().id(UUID.randomUUID()).title("title").level(1).build()))
                 .when(ontologyClient).getContents(eq(ID_1));
@@ -208,7 +208,7 @@ class UCControllerTest {
 
     @Test
     public void getUCByIdStudent() throws Exception{
-        doReturn(List.of(new Mapping(UUID.randomUUID(), List.of(new MappingPOJO(UUID.randomUUID(), "title")))))
+        doReturn(List.of(new Mapping(UUID.randomUUID(), "title", List.of(new MappingPOJO(UUID.randomUUID(), "title")))))
                 .when(ontologyClient).getMappings(eq(ID_1));
         doReturn(List.of(SyllabusContent.builder().id(UUID.randomUUID()).title("title").level(1).build()))
                 .when(ontologyClient).getContents(eq(ID_1));
