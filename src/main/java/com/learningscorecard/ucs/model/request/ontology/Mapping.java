@@ -13,5 +13,6 @@ import java.util.UUID;
 public class Mapping {
 
     private UUID id;
+    private String title;
     private List<MappingPOJO> covered;
 }
