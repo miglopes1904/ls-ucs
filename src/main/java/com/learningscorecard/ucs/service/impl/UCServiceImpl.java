@@ -136,37 +136,37 @@ public class UCServiceImpl implements UCService {
         List<JournalEntry> response = new ArrayList<>();
         uc.getStudents().forEach(student -> {
 
-                Progress progress = getProgress(id, student);
+                Optional<Progress> progress = getProgress(id, student);
 
-                progress.getCompletedQuests().forEach(completedQuest -> {
-                    String type = completedQuest.getType();
-                    if (!type.equals("Class Attendance") && !type.equals("Event")) {
-                        Optional<JournalEntry> journalOptional = response.stream()
-                                .filter(journalEntry -> journalEntry.getId().compareTo(completedQuest.getId()) == 0)
-                                .findFirst();
-                        JournalStudent journalStudent = JournalStudent.builder()
-                                .username(student.getUsername())
-                                .validated(completedQuest.getValidated())
-                                .XPs(completedQuest.getValue())
-                                .grade(completedQuest.getGrade())
-                                .difficulty(completedQuest.getDifficulty()).build();
+                if (progress.isPresent()) {
+                    progress.get().getCompletedQuests().forEach(completedQuest -> {
+                        String type = completedQuest.getType();
+                        if (!type.equals("Class Attendance") && !type.equals("Event")) {
+                            Optional<JournalEntry> journalOptional = response.stream()
+                                    .filter(journalEntry -> journalEntry.getId().compareTo(completedQuest.getId()) == 0)
+                                    .findFirst();
+                            JournalStudent journalStudent = JournalStudent.builder()
+                                    .username(student.getUsername())
+                                    .validated(completedQuest.getValidated())
+                                    .XPs(completedQuest.getValue())
+                                    .grade(completedQuest.getGrade())
+                                    .difficulty(completedQuest.getDifficulty()).build();
 
-                        if (journalOptional.isEmpty()) {
-                            response.add(JournalEntry.builder()
-                                    .id(completedQuest.getId())
-                                    .date(completedQuest.getStartDate())
-                                    .title(completedQuest.getTitle())
-                                    .students(Lists.newArrayList(journalStudent)).build());
-                        } else {
-                            JournalEntry journalEntry = journalOptional.get();
-                            journalEntry.getStudents().add(journalStudent);
+                            if (journalOptional.isEmpty()) {
+                                response.add(JournalEntry.builder()
+                                        .id(completedQuest.getId())
+                                        .date(completedQuest.getStartDate())
+                                        .title(completedQuest.getTitle())
+                                        .students(Lists.newArrayList(journalStudent)).build());
+                            } else {
+                                JournalEntry journalEntry = journalOptional.get();
+                                journalEntry.getStudents().add(journalStudent);
+                            }
                         }
-                    }
-                });
-
+                    });
+                    response.sort(Comparator.comparing(JournalEntry::getDate));
+                }
         });
-        response.sort(Comparator.comparing(JournalEntry::getDate));
-
         return response;
     }
 
@@ -180,8 +180,13 @@ public class UCServiceImpl implements UCService {
             uc.getGuilds().forEach(guild -> {
                 Long total = guild
                         .getStudents().stream()
-                        .mapToLong(student -> getProgress(id, student)
-                                .getValue()).sum();
+                        .mapToLong(student -> {
+                            Optional<Progress> progress = getProgress(id, student);
+                            if (progress.isPresent())
+                                return progress.get().getValue();
+                            else
+                                return 0L;
+                        } ).sum();
 
                 response.add(new LeaderboardEntry(
                         guild.getName(),
@@ -193,23 +198,24 @@ public class UCServiceImpl implements UCService {
         } else if(type.equals("all")) {
             uc.getStudents().forEach(student -> {
 
-                LeaderboardEntry.LeaderboardEntryBuilder builder = LeaderboardEntry.builder();
-                Avatar avatar = student.getAvatars().stream().filter(avatar1 -> avatar1.getUc()
-                                .compareTo(uc.getId()) == 0)
-                                .findFirst()
-                                .orElse(new Avatar("USER"));
+                Optional<Progress> progress = getProgress(id, student);
 
-                Alliance alliance = getAlliance(uc, student);
+                if (progress.isPresent()) {
+                    LeaderboardEntry.LeaderboardEntryBuilder builder = LeaderboardEntry.builder();
+                    Avatar avatar = student.getAvatars().stream().filter(avatar1 -> avatar1.getUc()
+                                    .compareTo(uc.getId()) == 0)
+                            .findFirst()
+                            .orElse(new Avatar("USER"));
 
-                builder.name(student.getUsername())
-                        .avatar(avatar.getValue()).alliance(alliance.getName());
+                    Alliance alliance = getAlliance(uc, student);
 
-                Progress progress = getProgress(id, student);
+                    builder.name(student.getUsername())
+                            .avatar(avatar.getValue()).alliance(alliance.getName());
+                    builder.title(progress.get().getRank()).XP(progress.get().getValue());
 
-                builder.title(progress.getRank()).XP(progress.getValue());
 
-
-                response.add(builder.build());
+                    response.add(builder.build());
+                }
             });
 
         } else {
@@ -223,27 +229,30 @@ public class UCServiceImpl implements UCService {
     private void getLeaderboardByType(UUID id, List<LeaderboardEntry> response, UC uc, String type) {
         uc.getStudents().forEach(student -> {
 
-            LeaderboardEntry.LeaderboardEntryBuilder builder = LeaderboardEntry.builder();
-            Avatar avatar = student.getAvatars().stream().filter(avatar1 -> avatar1.getUc()
-                            .compareTo(uc.getId()) == 0)
-                    .findFirst().orElse(new Avatar("USER"));
-            Alliance alliance = getAlliance(uc, student);
+            Optional<Progress> progress = getProgress(id, student);
 
-            builder.name(student.getUsername())
-                    .avatar(avatar.getValue()).alliance(alliance.getName());
+            if (progress.isPresent()) {
+                LeaderboardEntry.LeaderboardEntryBuilder builder = LeaderboardEntry.builder();
+                Avatar avatar = student.getAvatars().stream().filter(avatar1 -> avatar1.getUc()
+                                .compareTo(uc.getId()) == 0)
+                        .findFirst().orElse(new Avatar("USER"));
+                Alliance alliance = getAlliance(uc, student);
 
-            Progress progress = getProgress(id, student);
-
-            Long total = progress
-                    .getCompletedQuests().stream()
-                    .filter(completedQuest -> completedQuest.getValidated()
-                            && completedQuest.getType().equals(StringUtils.capitalize(type)))
-                    .mapToLong(CompletedQuest::getValue).sum();
+                builder.name(student.getUsername())
+                        .avatar(avatar.getValue()).alliance(alliance.getName());
 
 
-            builder.title(progress.getRank()).XP(total);
+                Long total = progress.get()
+                        .getCompletedQuests().stream()
+                        .filter(completedQuest -> completedQuest.getValidated()
+                                && completedQuest.getType().equals(StringUtils.capitalize(type)))
+                        .mapToLong(CompletedQuest::getValue).sum();
 
-            response.add(builder.build());
+
+                builder.title(progress.get().getRank()).XP(total);
+
+                response.add(builder.build());
+            }
         });
     }
 
@@ -255,12 +264,9 @@ public class UCServiceImpl implements UCService {
                                 + " does not belong to an alliance"));
     }
 
-    private Progress getProgress(UUID id, Student student) {
+    private Optional<Progress> getProgress(UUID id, Student student) {
         return student.getProgresses().stream()
-                .filter(progress1 -> progress1.getUc().compareTo(id) == 0).findFirst()
-                .orElseThrow(() ->
-                        new LSException("User " + student.getUsername()
-                                + " does not have progress for this UC"));
+                .filter(progress1 -> progress1.getUc().compareTo(id) == 0).findFirst();
     }
 
     private UC getOrElseThrow(UUID id) {

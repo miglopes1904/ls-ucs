@@ -387,40 +387,6 @@ public class UCServiceImplTest {
     }
 
     @Test
-    public void getLeaderboardNoProgress() {
-
-        UC_1.getStudents().add(Student.builder()
-                .id(UUID.randomUUID())
-                .alliances(List.of(
-                        new Alliance("MEI", ID_1)
-                ))
-                .avatars(List.of(new Avatar("EAGLE", ID_1)))
-                .progresses(List.of(
-                        Progress.builder()
-                                .id(UUID.randomUUID())
-                                .uc(UUID.randomUUID())
-                                .rank("rank")
-                                .value(17000L)
-                                .completedQuests(List.of(
-                                        CompletedQuest.builder()
-                                                .validated(Boolean.TRUE)
-                                                .difficulty(1)
-                                                .id(ID_1)
-                                                .endDate(LocalDate.now())
-                                                .grade("A")
-                                                .startDate(LocalDate.now())
-                                                .title("title")
-                                                .value(1500L)
-                                                .type("Quiz").build()
-                                )).build()
-                )).build());
-
-        LSException thrown = assertThrows(LSException.class, () -> service.getLeaderboard(ID_1, "all"));
-
-        assertEquals("User To be defined does not have progress for this UC", thrown.getMessage());
-    }
-
-    @Test
     public void deleteUC() {
         String response = service.delete(ID_1);
 

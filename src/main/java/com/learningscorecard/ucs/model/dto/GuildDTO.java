@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class GuildDTO {
     @JsonProperty("project_description")
     private String projectDescription;
 
-    private List<ExtStudentDTO> students;
+    private List<ExtStudentDTO> students = new ArrayList<>();
 
     private UUID uc;
 

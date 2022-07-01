@@ -6,6 +6,7 @@ import com.learningscorecard.ucs.model.dto.ExtStudentDTO;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public class GuildDTO4Student {
     @JsonProperty("project_description")
     private String projectDescription;
 
-    private List<ExtStudentDTO4Student> students;
+    private List<ExtStudentDTO4Student> students = new ArrayList<>();
 
     private UUID uc;
 }
