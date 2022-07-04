@@ -198,25 +198,25 @@ public class UCServiceImpl implements UCService {
             });
         } else if(type.equals("all")) {
             uc.getStudents().forEach(student -> {
-
+                LeaderboardEntry.LeaderboardEntryBuilder builder = LeaderboardEntry.builder();
                 Optional<Progress> progress = getProgress(id, student);
 
+                Avatar avatar = student.getAvatars().stream().filter(avatar1 -> avatar1.getUc()
+                                .compareTo(uc.getId()) == 0)
+                        .findFirst()
+                        .orElse(new Avatar("USER"));
+
+                Alliance alliance = getAlliance(uc, student);
+
+                builder.name(student.getUsername())
+                        .avatar(avatar.getValue()).alliance(alliance.getName());
+
                 if (progress.isPresent()) {
-                    LeaderboardEntry.LeaderboardEntryBuilder builder = LeaderboardEntry.builder();
-                    Avatar avatar = student.getAvatars().stream().filter(avatar1 -> avatar1.getUc()
-                                    .compareTo(uc.getId()) == 0)
-                            .findFirst()
-                            .orElse(new Avatar("USER"));
-
-                    Alliance alliance = getAlliance(uc, student);
-
-                    builder.name(student.getUsername())
-                            .avatar(avatar.getValue()).alliance(alliance.getName());
                     builder.title(progress.get().getRank()).XP(progress.get().getValue());
-
-
-                    response.add(builder.build());
                 }
+
+                response.add(builder.build());
+
             });
 
         } else {
@@ -230,19 +230,19 @@ public class UCServiceImpl implements UCService {
     private void getLeaderboardByType(UUID id, List<LeaderboardEntry> response, UC uc, String type) {
         uc.getStudents().forEach(student -> {
 
+            LeaderboardEntry.LeaderboardEntryBuilder builder = LeaderboardEntry.builder();
+            Avatar avatar = student.getAvatars().stream().filter(avatar1 -> avatar1.getUc()
+                            .compareTo(uc.getId()) == 0)
+                    .findFirst().orElse(new Avatar("USER"));
+            Alliance alliance = getAlliance(uc, student);
+
+            builder.name(student.getUsername())
+                    .avatar(avatar.getValue()).alliance(alliance.getName());
+
+
             Optional<Progress> progress = getProgress(id, student);
 
             if (progress.isPresent()) {
-                LeaderboardEntry.LeaderboardEntryBuilder builder = LeaderboardEntry.builder();
-                Avatar avatar = student.getAvatars().stream().filter(avatar1 -> avatar1.getUc()
-                                .compareTo(uc.getId()) == 0)
-                        .findFirst().orElse(new Avatar("USER"));
-                Alliance alliance = getAlliance(uc, student);
-
-                builder.name(student.getUsername())
-                        .avatar(avatar.getValue()).alliance(alliance.getName());
-
-
                 Long total = progress.get()
                         .getCompletedQuests().stream()
                         .filter(completedQuest -> completedQuest.getValidated()
@@ -251,9 +251,9 @@ public class UCServiceImpl implements UCService {
 
 
                 builder.title(progress.get().getRank()).XP(total);
-
-                response.add(builder.build());
             }
+
+            response.add(builder.build());
         });
     }
 

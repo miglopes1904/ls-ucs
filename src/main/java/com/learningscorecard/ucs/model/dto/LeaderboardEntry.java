@@ -13,7 +13,9 @@ public class LeaderboardEntry {
 
     private String name;
     private String alliance;
-    private Long XP;
-    private String title;
+    @Builder.Default
+    private Long XP = 0L;
+    @Builder.Default
+    private String title = "Newbie";
     private String avatar;
 }
