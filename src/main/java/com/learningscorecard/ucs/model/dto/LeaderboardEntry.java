@@ -11,6 +11,7 @@ import java.util.UUID;
 @Builder
 public class LeaderboardEntry {
 
+    private int index;
     private String name;
     private String alliance;
     @Builder.Default

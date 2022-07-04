@@ -1,6 +1,7 @@
 package com.learningscorecard.ucs.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Streams;
 import com.learningscorecard.ucs.client.OntologyClient;
 import com.learningscorecard.ucs.exception.LSException;
 import com.learningscorecard.ucs.model.dto.*;
@@ -190,6 +191,7 @@ public class UCServiceImpl implements UCService {
                         } ).sum();
 
                 response.add(new LeaderboardEntry(
+                        0,
                         guild.getName(),
                         guild.getAlliance(),
                         total,
@@ -223,8 +225,16 @@ public class UCServiceImpl implements UCService {
             getLeaderboardByType(id, response, uc, type);
         }
 
-        response.sort(Comparator.comparing(LeaderboardEntry::getXP).reversed());
-        return response;
+        return Streams.mapWithIndex(
+                response.stream().sorted(Comparator.comparing(LeaderboardEntry::getXP).reversed()),
+                (entry, index) -> {
+                    entry.setIndex((int) index + 1);
+                    return entry;
+                }).toList();
+
+        //response.sort(Comparator.comparing(LeaderboardEntry::getXP).reversed());
+
+        //return response;
     }
 
     private void getLeaderboardByType(UUID id, List<LeaderboardEntry> response, UC uc, String type) {
