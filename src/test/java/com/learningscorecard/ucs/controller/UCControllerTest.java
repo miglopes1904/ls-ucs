@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.learningscorecard.ucs.client.OntologyClient;
+import com.learningscorecard.ucs.client.StudentClient;
 import com.learningscorecard.ucs.exception.ExceptionResponseBody;
 import com.learningscorecard.ucs.model.dto.Counts;
 import com.learningscorecard.ucs.model.dto.JournalEntry;
@@ -159,6 +160,9 @@ class UCControllerTest {
 
     @MockBean
     OntologyClient ontologyClient;
+
+    @MockBean
+    StudentClient studentClient;
 
     @Test
     public void getUCs() throws Exception{

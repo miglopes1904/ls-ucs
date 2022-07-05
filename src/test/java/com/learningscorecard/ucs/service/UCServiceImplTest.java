@@ -2,6 +2,7 @@ package com.learningscorecard.ucs.service;
 
 import com.google.common.collect.Lists;
 import com.learningscorecard.ucs.client.OntologyClient;
+import com.learningscorecard.ucs.client.StudentClient;
 import com.learningscorecard.ucs.exception.LSException;
 import com.learningscorecard.ucs.model.dto.Counts;
 import com.learningscorecard.ucs.model.dto.JournalEntry;
@@ -150,11 +151,12 @@ public class UCServiceImplTest {
             );
     private final EntityUtils entityUtils = mock(EntityUtils.class);
     private final OntologyClient ontologyClient = mock(OntologyClient.class);
+    private final StudentClient studentClient = mock(StudentClient.class);
     private UCServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        service = new UCServiceImpl(repository, mapper, entityUtils, ontologyClient);
+        service = new UCServiceImpl(repository, mapper, entityUtils, ontologyClient, studentClient);
         setupRepo();
     }
 

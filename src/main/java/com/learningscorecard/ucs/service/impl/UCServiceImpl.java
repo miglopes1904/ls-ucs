@@ -3,12 +3,14 @@ package com.learningscorecard.ucs.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import com.learningscorecard.ucs.client.OntologyClient;
+import com.learningscorecard.ucs.client.StudentClient;
 import com.learningscorecard.ucs.exception.LSException;
 import com.learningscorecard.ucs.model.dto.*;
 import com.learningscorecard.ucs.model.dto.teacher.UCDTO4Teacher;
 import com.learningscorecard.ucs.model.entity.*;
 import com.learningscorecard.ucs.model.mapper.UCMapper;
 import com.learningscorecard.ucs.model.request.CreateUCRequest;
+import com.learningscorecard.ucs.model.request.RemoveUsersRequest;
 import com.learningscorecard.ucs.model.request.ontology.CreateOntologyUCRequest;
 import com.learningscorecard.ucs.model.request.ontology.Mapping;
 import com.learningscorecard.ucs.model.request.ontology.SyllabusContent;
@@ -33,12 +35,14 @@ public class UCServiceImpl implements UCService {
     private final UCMapper mapper;
     private final EntityUtils entityUtils;
     private final OntologyClient ontologyClient;
+    private final StudentClient studentClient;
 
-    public UCServiceImpl(UCRepository repository, UCMapper mapper, EntityUtils entityUtils, OntologyClient ontologyClient) {
+    public UCServiceImpl(UCRepository repository, UCMapper mapper, EntityUtils entityUtils, OntologyClient ontologyClient, StudentClient studentClient) {
         this.repository = repository;
         this.mapper = mapper;
         this.entityUtils = entityUtils;
         this.ontologyClient = ontologyClient;
+        this.studentClient = studentClient;
     }
 
     @Override
@@ -127,8 +131,16 @@ public class UCServiceImpl implements UCService {
 
     @Override
     public String delete(UUID id) {
-        repository.deleteById(id);
+        UC uc = getOrElseThrow(id);
+        try {
         ontologyClient.deleteUC(id);
+        studentClient.removeStudents(RemoveUsersRequest.builder()
+                .students(uc.getStudents().stream().map(Student::getId).toList())
+                .uc(id).build());
+        } catch (RuntimeException exception) {
+            throw new LSException(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        repository.deleteById(id);
         return "UC was deleted successfully";
     }
 
