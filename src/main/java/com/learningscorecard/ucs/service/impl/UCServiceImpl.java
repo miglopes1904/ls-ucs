@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -101,6 +102,7 @@ public class UCServiceImpl implements UCService {
         dto.setContents(contents);
         dto.setCalendar(calendarEntries);
         dto.setPlanning(planningEntries);
+        dto.setDifficulties(getDifficulties(id, response.getStudents()));
 
         return dto;
     }
@@ -247,6 +249,49 @@ public class UCServiceImpl implements UCService {
         //response.sort(Comparator.comparing(LeaderboardEntry::getXP).reversed());
 
         //return response;
+    }
+
+    private List<DifficultyEntry> getDifficulties(UUID id, List<Student> students) {
+
+        List<DifficultyEntry> response = new ArrayList<>();
+
+        students.stream().forEach(student -> addDifficultyEntry(response,
+                student.getDifficulties().stream()
+                        .filter(difficulty -> difficulty.getUc().compareTo(id) == 0).findFirst()));
+
+        response.forEach(difficultyEntry -> {
+            difficultyEntry.setMean((int) Math.round(difficultyEntry.getDifficulties().stream()
+                    .mapToInt(Integer::intValue)
+                    .average().getAsDouble()));
+            difficultyEntry.setTotal((int) difficultyEntry.getDifficulties().size());
+        });
+        return response;
+    }
+
+    private void addDifficultyEntry(List<DifficultyEntry> difficultyEntries, Optional<Difficulty> difficulty) {
+
+        if (difficulty.isPresent()) {
+            difficulty.get().getContents().stream().forEach(contentDifficulty -> {
+                if(contentDifficulty.getValue() >= 0) {
+                    Optional<DifficultyEntry> difficultyEntryOptional =
+                            difficultyEntries.stream()
+                                    .filter(difficultyEntry ->
+                                            difficultyEntry.getContent()
+                                                    .compareTo(contentDifficulty.getId()) == 0)
+                                    .findFirst();
+
+                    if (difficultyEntryOptional.isPresent()) {
+                        difficultyEntryOptional.get().getDifficulties().add(contentDifficulty.getValue());
+                    } else {
+                        difficultyEntries.add(DifficultyEntry.builder()
+                                .content(contentDifficulty.getId())
+                                .difficulties(Lists.newArrayList(contentDifficulty.getValue())).build());
+                    }
+                }
+            });
+
+        }
+
     }
 
     private void getLeaderboardByType(UUID id, List<LeaderboardEntry> response, UC uc, String type) {

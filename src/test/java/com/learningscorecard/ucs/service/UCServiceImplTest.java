@@ -210,6 +210,63 @@ public class UCServiceImplTest {
         assertEquals(UCDTO4Student.class, response.getClass());
     }
 
+
+    @Test
+    public void getUCByIdWithDifficulties() {
+        UUID ID = UUID.randomUUID();
+        UUID CONTENT_ID = UUID.randomUUID();
+        UUID CONTENT_ID_2 = UUID.randomUUID();
+        UUID CONTENT_ID_3 = UUID.randomUUID();
+
+        UC difficultyResponse = UC.builder()
+                .id(ID)
+                .students(List.of(
+                        Student.builder()
+                                .difficulties(List.of(
+                                        Difficulty.builder()
+                                                .uc(ID)
+                                                .contents(List.of(
+                                                        ContentDifficulty.builder()
+                                                                .id(CONTENT_ID)
+                                                                .value(4).build(),
+                                                        ContentDifficulty.builder()
+                                                                .id(CONTENT_ID_2)
+                                                                .value(4).build(),
+                                                        ContentDifficulty.builder()
+                                                                .id(CONTENT_ID_3)
+                                                                .value(4).build()
+                                                )).build()
+                                )).build(),
+                        Student.builder()
+                                .difficulties(List.of(
+                                        Difficulty.builder()
+                                                .uc(ID)
+                                                .contents(List.of(
+                                                        ContentDifficulty.builder()
+                                                                .id(CONTENT_ID)
+                                                                .value(2).build(),
+                                                        ContentDifficulty.builder()
+                                                                .id(CONTENT_ID_2)
+                                                                .value(2).build()
+                                                )).build()
+                                )).build()
+                )).build();
+
+        doReturn(List.of(new Mapping(UUID.randomUUID(), "title", List.of(new MappingPOJO(UUID.randomUUID(), "title")))))
+                .when(ontologyClient).getMappings(eq(ID_1));
+        doReturn(List.of(SyllabusContent.builder().id(UUID.randomUUID()).title("title").level(1).build()))
+                .when(ontologyClient).getContents(eq(ID_1));
+
+        doReturn(Optional.of(difficultyResponse)).when(repository).findById(ID);
+
+
+        UCDTO response = service.getByID(ID, AUTH_TEACHER);
+
+        assertEquals(3, response.getDifficulties().get(0).getMean());
+        assertEquals(3, response.getDifficulties().get(1).getMean());
+        assertEquals(4, response.getDifficulties().get(2).getMean());
+    }
+
     @Test
     public void getUCByIdNotFound() {
 

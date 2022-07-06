@@ -64,5 +64,8 @@ public class UCDTO {
     @Builder.Default
     private List<PlanningEntry> planning = new ArrayList<>();
 
+    @Builder.Default
+    private List<DifficultyEntry> difficulties = new ArrayList<>();
+
     private Counts counts;
 }
