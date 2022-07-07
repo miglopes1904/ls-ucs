@@ -1,5 +1,6 @@
 package com.learningscorecard.ucs.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.learningscorecard.ucs.model.entity.Alliance;
 import com.learningscorecard.ucs.model.entity.Avatar;
 import com.learningscorecard.ucs.model.entity.Progress;
@@ -26,6 +27,9 @@ public class ExtStudentDTO {
     private Long number;
 
     private String email;
+
+    @JsonProperty("continuous_assessment")
+    private Boolean continuousAssessment;
 
     @Builder.Default
     private List<Avatar> avatars = new ArrayList<>();
