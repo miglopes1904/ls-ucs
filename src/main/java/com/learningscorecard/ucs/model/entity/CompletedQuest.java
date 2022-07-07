@@ -16,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CompletedQuest {
 
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Builder.Default

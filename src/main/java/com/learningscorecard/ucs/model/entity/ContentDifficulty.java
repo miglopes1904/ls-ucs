@@ -2,6 +2,7 @@ package com.learningscorecard.ucs.model.entity;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Builder
 public class ContentDifficulty {
 
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
     private String title;
     @Builder.Default

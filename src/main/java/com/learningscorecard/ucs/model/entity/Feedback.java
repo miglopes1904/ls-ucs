@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.util.UUID;
 
 @Data
 @Embeddable
@@ -14,9 +16,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 public class Feedback {
 
-    private Long id;
-
-    private String title;
-
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID quest;
     private String value;
 }
