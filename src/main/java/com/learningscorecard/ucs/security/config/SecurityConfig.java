@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilterAfter(new JWTVerificationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests().antMatchers().permitAll()
+                .authorizeRequests().antMatchers("/actuator/**").permitAll()
                 .anyRequest()
                 .authenticated();
     }
